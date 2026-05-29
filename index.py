@@ -50,3 +50,5 @@ for n in extensoes:
 
 for i in arquivos:
     print(i)
+
+    
