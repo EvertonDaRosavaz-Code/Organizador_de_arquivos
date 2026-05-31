@@ -1,30 +1,16 @@
 import os
-import time
-import shutil
-caminho  = r"C:\Users\evert\OneDrive\Desktop\pastateste"
-#Aprendizado
-"""arquivos = os.listdir(caminho)
-names_foldesExtensao  = []
+from pathlib import Path
+from time import sleep
 
-
-for i in arquivos:
-    #print(os.path.splitext(i)[1]) Aqui consigo pegar somente as extensões
-
-    names_foldesExtensao.append(os.path.splitext(i)[1])
-
-print(names_foldesExtensao)
-
-#Criação de pasta 
-teste = os.path.join(caminho, "Pasta_zip")
-os.mkdir(teste)
-
-
-teste = os.makedirs(caminho, exist_ok=True)"""
-
-#================================Código=========================
+#===============================Código=========================
+caminho  = Path(r"C:\Users\evert\OneDrive\Desktop\pastateste")
+caminho_texto = str(caminho)
+pasta = "teste" 
+#Achei interresante tornar uma variavel caso eu queira que o nome da pasta seja diferente e assim poderiamos mudar ela de forma globalmente sem ter que alterar uma por uma 
 
 
 arquivos = os.listdir(caminho)# Me entrega um vetor dos arquivos dentro da pasta
+
 extensoes = []
 for i in arquivos:
     #print(os.path.splitext(i)[1])
@@ -40,15 +26,21 @@ extensoes = [elemento for elemento in extensoes if elemento] #Remover os espaço
 
 #Criação das pastas caso elas nao existam
 for n in extensoes:
-    if  os.path.exists(caminho + r"\Pasta" + f"_{n}"):
+    #Verificar se a pasta Pasta_(a extenção) existe
+
+    if  os.path.exists(caminho_texto + r"\ " + f"{pasta}" + f"_{n}"):                      
         break
     else:
-        create = os.path.join(caminho, "Pasta" + f"_{n}")
+        create = os.path.join(caminho, f"{pasta}" + f"_{n}")
         os.mkdir(create)
 
-
-
-for i in arquivos:
-    print(i)
-
-    
+print('Movendo para as pastas')
+sleep(3)
+#Proximo passo ja com as pastas criadas mover os arquivos para suas respectivas pastas
+for item in caminho.iterdir():
+    if item.is_file():
+        pasta_destino = caminho / f"{pasta}_{item.suffix[1:]}"
+        destino = pasta_destino / item.name
+        item.rename(destino)
+        
+        
